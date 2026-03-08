@@ -1,160 +1,249 @@
 # Rainfall Prediction using Machine Learning
 
-![Rainfall Prediction](outputs/actual_vs_predicted.png)
+An end-to-end **Machine Learning project** that predicts **daily rainfall** using historical meteorological data.
 
-A machine learning project for predicting **daily rainfall levels** using meteorological data.  
-This project analyzes historical weather data and builds predictive models using advanced feature engineering and multiple machine learning algorithms.
+This project demonstrates a complete ML workflow including:
 
-The objective is to model rainfall patterns and generate accurate predictions using supervised learning techniques.
+- Data preprocessing
+- Feature engineering
+- Exploratory data analysis
+- Model training
+- Model evaluation
+- Model comparison
+- Model serialization for deployment
+
+The goal is to learn rainfall patterns from historical weather data and generate accurate predictions.
 
 ---
 
-# Project Overview
+# Project Objective
 
-Rainfall prediction plays a critical role in:
+Accurate rainfall prediction is critical for:
 
-- agriculture planning
-- flood forecasting
-- climate analysis
-- water resource management
+- Agriculture planning
+- Water resource management
+- Flood monitoring
+- Drought prediction
+- Climate research
 
-This project builds a **complete machine learning pipeline** that includes:
-
-- Data preprocessing
-- Exploratory data analysis
-- Feature engineering
-- Dimensionality reduction (PCA)
-- Model training and comparison
-- Prediction and evaluation
-
-The dataset used is obtained from **NASA POWER climate data**.
+This project builds a machine learning model that learns rainfall patterns from historical meteorological observations and predicts rainfall based on weather conditions.
 
 ---
 
 # Dataset
 
-The dataset contains **daily meteorological observations** from **1995 to 2025**.
+The dataset contains daily meteorological observations such as:
 
-Features include:
+- Temperature
+- Humidity
+- Solar Radiation
+- Wind Speed
+- Soil Moisture
+- Dew Point
+- Precipitation
 
-| Feature | Description |
-|------|------|
-| ALLSKY_SFC_SW_DWN | Surface shortwave radiation |
-| ALLSKY_SFC_SW_DNI | Direct solar radiation |
-| T2M | Temperature at 2 meters |
-| T2MDEW | Dew point temperature |
-| T2MWET | Wet bulb temperature |
-| T2M_MAX | Maximum temperature |
-| T2M_MIN | Minimum temperature |
-| RH2M | Relative humidity |
-| QV2M | Specific humidity |
-| WS2M | Wind speed |
-| GWETTOP | Soil moisture |
-| PRECTOTCORR | Corrected precipitation (target variable) |
+### Target Variable
+
+`PRECTOTCORR` → Daily rainfall (mm)
+
+---
+
+# Machine Learning Pipeline
+Raw Dataset
+↓
+Data Cleaning
+↓
+Feature Engineering
+↓
+Exploratory Data Analysis
+↓
+Feature Selection
+↓
+Model Training
+↓
+Model Evaluation
+↓
+Best Model Selection
+↓
+Prediction (2021–2025)
+↓
+Model Serialization
+
+---
+
+# Data Preprocessing
+
+The preprocessing stage prepares the dataset for machine learning.
+
+Steps performed:
+
+- Replaced missing values (`-999`) with `NaN`
+- Applied **linear interpolation** for missing values
+- Used **forward fill and backward fill** to maintain time continuity
+- Removed invalid rainfall observations
+- Created time-based features from **year and day-of-year**
+
+This ensures the dataset remains **consistent and usable for time-series modeling**.
 
 ---
 
 # Feature Engineering
 
-To improve rainfall prediction performance, several advanced features were created:
+Feature engineering was used to capture rainfall trends and temporal dependencies.
 
 ### Lag Features
-Previous rainfall values were used as predictors.
 
-- RAIN_LAG1
-- RAIN_LAG2
-- RAIN_LAG3
+Rainfall in previous days often influences future rainfall.
 
-### Rolling Rainfall Features
-Captures short-term rainfall trends.
+- `RAIN_LAG1`
+- `RAIN_LAG2`
+- `RAIN_LAG3`
 
-- RAIN_ROLLING3 (3-day average rainfall)
-- RAIN_ROLLING7 (7-day average rainfall)
+### Rolling Window Features
 
-These features significantly improved the predictive performance.
+- `RAIN_ROLLING3`
+- `RAIN_ROLLING7`
+
+### Weather Interaction Features
+
+- `RAIN_CHANGE`
+- `RAIN_INTENSITY`
+- `TEMP_DEW_DIFF`
+
+These features allow the model to capture **short-term weather patterns and interactions between meteorological variables**.
 
 ---
 
 # Exploratory Data Analysis
 
-Key insights obtained from EDA:
+## Rainfall Distribution
 
-- Rainfall exhibits strong **seasonal patterns**
-- Monsoon months show higher precipitation variability
-- Recent rainfall history is a strong predictor of future rainfall
+![Rainfall Distribution](outputs/rainfall_distribution.png)
 
-Visualizations included:
+## Rainfall Over Time
 
-- Monthly rainfall distribution
-- Rainfall trend over time
-- Correlation heatmap
+![Rainfall Over Time](outputs/rainfall_over_time.png)
 
----
+## Monthly Rainfall Distribution
 
-# Machine Learning Models
+![Monthly Rainfall Distribution](outputs/montly_rainfall_distribution.png)
 
-Multiple regression models were trained and compared.
+## Feature Correlation
 
-| Model | RMSE | MAE | R² Score |
-|------|------|------|------|
-| Decision Tree | 3.73 | 1.21 | 0.74 |
-| Random Forest | 2.21 | 0.79 | 0.91 |
-| SVR | 2.50 | 1.13 | 0.88 |
-| XGBoost | **1.97** | **0.65** | **0.93** |
+![Correlation Heatmap](outputs/correlation_heatmap.png)
 
 ---
 
-# Best Model
+# Dimensionality Reduction
 
-The **XGBoost Regressor** achieved the best performance.
+Principal Component Analysis (PCA) was applied to analyze variance contribution.
 
-**Final Performance**
+![PCA Explained Variance](outputs/pca_variance.png)
 
-```
-R² Score: 0.927
-RMSE: 1.97
-MAE: 0.65
-```
+More than **95% of the dataset variance** was preserved using a reduced number of principal components.
 
-This model was selected as the final rainfall prediction model.
+---
+
+# Model Training
+
+Multiple machine learning algorithms were trained and evaluated:
+
+- Linear Regression
+- Decision Tree Regressor
+- Random Forest Regressor
+- Gradient Boosting Regressor
+- XGBoost Regressor
+- LightGBM Regressor
+- Support Vector Regressor
+
+---
+
+# Model Comparison
+
+![Model Comparison](outputs/model_comparision(RMSE).png)
+
+Models were evaluated using:
+
+- R² Score
+- RMSE
+- MAE
+- MSE
+
+---
+
+# Best Performing Model
+
+**XGBoost Regressor** achieved the best performance.
+
+### Key advantages
+
+- Lowest RMSE
+- Strong generalization capability
+- Effective handling of nonlinear relationships
+- High performance on structured tabular data
 
 ---
 
 # Model Evaluation
 
-The models were evaluated using the following metrics:
+![Actual vs Predicted](outputs/act_vs_pred(test).png)
 
-- RMSE (Root Mean Squared Error)
-- MAE (Mean Absolute Error)
-- R² Score
+The predicted rainfall values closely follow the actual observations, indicating strong model performance.
 
-Additional evaluation techniques included:
-
-- Actual vs Predicted rainfall visualization
-- Residual error distribution analysis
-- Feature importance analysis
+Residual analysis shows **minimal systematic prediction bias**.
 
 ---
 
 # Feature Importance
 
-Feature importance analysis revealed that rainfall prediction is strongly influenced by **recent rainfall history**.
+![Feature Importance](outputs/feature_importance.png)
 
-Top contributing features:
+Important predictors include:
 
-1. RAIN_ROLLING3
-2. GWETTOP
-3. RAIN_LAG2
-4. RAIN_LAG1
+- Humidity
+- Soil Moisture
+- Dew Temperature
+- Recent Rainfall History
 
-This confirms that **short-term rainfall patterns are key predictors**.
+---
+
+# Future Prediction
+
+The trained model was used to generate rainfall predictions for **2021–2025**.
+
+![Future Predictions](outputs/act_vs_pred(2021-2025).png)
+
+Predictions were compared with observed rainfall values to evaluate generalization performance.
+
+---
+
+# Model Deployment
+
+The trained model was serialized using **Pickle** for fast inference.
+
+rainfall_prediction_model.pkl
+
+### Example Usage
+
+```python
+import pickle
+import numpy as np
+
+model = pickle.load(open("rainfall_prediction_model.pkl", "rb"))
+
+input_features = np.array([[70,0.3,22,20,2.5,1.2,0.8,0.4,1.1,0.9,0.2,0.6,2.5]])
+
+prediction = model.predict(input_features)
+
+print("Predicted Rainfall:", prediction[0])
+```
 
 ---
 
 # Project Structure
 
 ```
-rainfall-prediction-ml
+rainfall-ml-project
 │
 ├── data
 │   └── rainfall.csv
@@ -162,86 +251,60 @@ rainfall-prediction-ml
 ├── notebooks
 │   └── rainfall_analysis.ipynb
 │
-├── models
-│   └── rainfall_model.pkl
-│
 ├── outputs
-│   ├── predictions.csv
-│   ├── actual_vs_predicted.png
-│   ├── residual_distribution.png
-│   └── model_comparison.png
+│   ├── rainfall_distribution.png
+│   ├── rainfall_over_time.png
+│   ├── correlation_heatmap.png
+│   ├── model_comparision(RMSE).png
+│   ├── feature_importance.png
+│   ├── act_vs_pred(test).png
+│   └── act_vs_pred(2021-2025).png
 │
-├── requirements.txt
-├── README.md
-└── .gitignore
+├── cleaned_rainfall_dataset.csv
+├── rainfall_predictions_2021_2025.csv
+├── rainfall_prediction_model.pkl
+│
+└── README.md
 ```
 
 ---
 
-# Results Visualization
+# Tech Stack
 
-Example model outputs include:
-
-- Actual vs Predicted Rainfall
-- Residual Error Distribution
-- Model Comparison
-- Rainfall Seasonality Analysis
-
-These visualizations help understand both **model accuracy and rainfall patterns**.
+- Python  
+- Pandas  
+- NumPy  
+- Scikit-learn  
+- XGBoost  
+- LightGBM  
+- Matplotlib  
+- Seaborn  
 
 ---
 
-# Installation
+# Key Learnings
 
-Clone the repository:
-
-```bash
-git clone https://github.com/yourusername/rainfall-prediction-ml.git
-cd rainfall-prediction-ml
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Run the notebook:
-
-```bash
-jupyter notebook
-```
+- Feature engineering for time-dependent tabular datasets  
+- Model comparison across multiple machine learning algorithms  
+- Working with meteorological datasets  
+- Building end-to-end machine learning pipelines  
+- Model deployment using serialized models  
 
 ---
 
 # Future Improvements
 
-Possible extensions for this project include:
+Potential extensions include:
 
-- Deep learning models (LSTM for time series forecasting)
-- Hyperparameter tuning using GridSearchCV
-- Deployment using FastAPI
-- Real-time rainfall prediction API
-- Interactive dashboard using Streamlit
-
----
-
-# Technologies Used
-
-- Python
-- Pandas
-- NumPy
-- Scikit-learn
-- XGBoost
-- Matplotlib
-- Seaborn
-- Jupyter Notebook
+- Implementing deep learning models (**LSTM / RNN**)  
+- Hyperparameter tuning with **Optuna**  
+- Integration with real-time weather APIs  
+- Deployment as a web application (**FastAPI / Streamlit**)  
 
 ---
 
 # Author
-**Srishti Sindgi**  
+
+**Srishti Sindgi**
+
 GitHub: https://github.com/sindgisrishtis
-
-
----

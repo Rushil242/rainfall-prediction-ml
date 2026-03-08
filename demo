@@ -1,0 +1,17 @@
+Rainfall Prediction Model Loaded Successfully
+
+Enter RH2M: 70
+Enter GWETTOP: 0.3
+Enter T2MDEW: 22
+Enter T2M_MIN: 21
+Enter WS2M: 2
+Enter RAIN_LAG1: 1.2
+Enter RAIN_LAG2: 0.8
+Enter RAIN_LAG3: 0.4
+Enter RAIN_ROLLING3: 1.1
+Enter RAIN_ROLLING7: 0.9
+Enter RAIN_CHANGE: 0.2
+Enter RAIN_INTENSITY: 0.6
+Enter TEMP_DEW_DIFF: 2.5
+
+Predicted Rainfall: 3.27 mm
