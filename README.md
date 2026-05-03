@@ -1,4 +1,4 @@
-# Rainfall Prediction using Machine Learning
+# Rainfall Prediction using Machine Learning.
 
 An end-to-end **Machine Learning project** that predicts **daily rainfall** using historical meteorological data.
 
