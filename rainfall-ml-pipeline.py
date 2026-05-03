@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from pathlib import Path
 
 # ML Libraries
 from sklearn.model_selection import train_test_split
@@ -28,8 +29,29 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 # 1. Load Dataset
 # ==========================================
 
-df = pd.read_csv("rainfall.csv")
+data_path = Path("data/rainfall.csv")
+if not data_path.exists():
+    data_path = Path("rainfall.csv")
 
+if not data_path.exists():
+    raise FileNotFoundError(
+        "Could not find rainfall dataset. Please place rainfall.csv in the project root or data/ folder."
+    )
+
+with data_path.open() as f:
+    header_row = None
+    for idx, line in enumerate(f):
+        if line.startswith("YEAR,DOY"):
+            header_row = idx
+            break
+
+if header_row is None:
+    raise ValueError(
+        f"Could not find the header row in {data_path}. Ensure the file begins with the CSV header line 'YEAR,DOY,...'."
+    )
+
+# Skip metadata lines before the CSV header row and read the actual dataset.
+df = pd.read_csv(data_path, skiprows=header_row)
 print("Dataset shape:", df.shape)
 
 # ==========================================
@@ -178,8 +200,8 @@ def evaluate_model(model, X_train, X_test, y_train, y_test, name):
 
     model.fit(X_train, y_train)
 
-    y_train_pred = model.predict(X_train)
-    y_test_pred = model.predict(X_test)
+    y_train_pred = np.clip(model.predict(X_train), a_min=0, a_max=None)
+    y_test_pred  = np.clip(model.predict(X_test),  a_min=0, a_max=None)
 
     return {
         "Model": name,
@@ -254,7 +276,7 @@ best_model.fit(X_train, y_train)
 X_future = future_df[features]
 
 future_predictions = best_model.predict(X_future)
-
+future_predictions = np.clip(future_predictions, a_min=0, a_max=None)  
 future_df["Predicted_Rainfall"] = future_predictions
 
 prediction_table = future_df[["DATE","PRECTOTCORR","Predicted_Rainfall"]]
@@ -273,7 +295,7 @@ prediction_table.to_csv("rainfall_predictions_2021_2025.csv", index=False)
 # 16. Actual vs Predicted Plot
 # ==========================================
 
-y_test_pred = best_model.predict(X_test)
+y_test_pred = np.clip(best_model.predict(X_test), a_min=0, a_max=None)
 
 plt.figure(figsize=(6,6))
 plt.scatter(y_test, y_test_pred)

@@ -46,5 +46,5 @@ TEMP_DEW_DIFF
 
 # Predict rainfall
 prediction = model.predict(user_input)
-
-print("\nPredicted Rainfall:", round(prediction[0], 3), "mm")
+prediction_clipped = max(0.0, prediction[0])   # ← ADD THIS
+print("Predicted Rainfall:", round(prediction_clipped, 3), "mm")
