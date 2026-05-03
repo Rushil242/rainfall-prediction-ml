@@ -31,13 +31,39 @@ st.markdown("""
         color: #28251d !important;
     }
 
-    /* ---- Fix: all body text on light background ---- */
+    /* ---- Fix: all body text + headings on light background ---- */
     .main [data-testid="stMarkdownContainer"] p,
     .main [data-testid="stMarkdownContainer"] li,
     .main [data-testid="stMarkdownContainer"] span,
     .main [data-testid="stMarkdownContainer"] div,
+    .main [data-testid="stMarkdownContainer"] h1,
+    .main [data-testid="stMarkdownContainer"] h2,
+    .main [data-testid="stMarkdownContainer"] h3,
     .main p, .main span, .main div, .main label {
         color: #28251d !important;
+    }
+
+    /* ---- Fix: st.title() / st.header() / st.subheader() ---- */
+    .main h1, .main h2, .main h3, .main h4 {
+        color: #0f3638 !important;
+    }
+
+    /* ---- Fix: Streamlit's native title element ---- */
+    [data-testid="stHeading"],
+    [data-testid="stHeadingWithActionElements"] {
+        color: #0f3638 !important;
+    }
+    [data-testid="stHeading"] *,
+    [data-testid="stHeadingWithActionElements"] * {
+        color: #0f3638 !important;
+    }
+
+    /* ---- Fix: tab label text ---- */
+    .stTabs [data-baseweb="tab"] span {
+        color: #28251d !important;
+    }
+    .stTabs [aria-selected="true"] span {
+        color: white !important;
     }
 
     /* ---- Fix: selectbox text ---- */
