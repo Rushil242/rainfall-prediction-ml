@@ -18,6 +18,45 @@ st.set_page_config(
 st.markdown("""
 <style>
     /* ---- Global ---- */
+        /* ---- Fix: expander content text color ---- */
+    [data-testid="stExpander"] {
+        background: white !important;
+        border: 1px solid #dcd9d5 !important;
+        border-radius: 8px !important;
+    }
+    [data-testid="stExpander"] p,
+    [data-testid="stExpander"] span,
+    [data-testid="stExpander"] div,
+    [data-testid="stExpander"] label {
+        color: #28251d !important;
+    }
+
+    /* ---- Fix: all body text on light background ---- */
+    .main [data-testid="stMarkdownContainer"] p,
+    .main [data-testid="stMarkdownContainer"] li,
+    .main [data-testid="stMarkdownContainer"] span,
+    .main [data-testid="stMarkdownContainer"] div,
+    .main p, .main span, .main div, .main label {
+        color: #28251d !important;
+    }
+
+    /* ---- Fix: selectbox text ---- */
+    [data-testid="stSelectbox"] label,
+    [data-testid="stSelectbox"] div[data-baseweb="select"] span {
+        color: #28251d !important;
+    }
+
+    /* ---- Fix: section-title inside columns ---- */
+    .section-title {
+        color: #0f3638 !important;
+    }
+
+    /* ---- Fix: metric widget labels and values on light bg ---- */
+    [data-testid="stMetricLabel"],
+    [data-testid="stMetricValue"],
+    [data-testid="stMetricDelta"] {
+        color: #28251d !important;
+    }
     [data-testid="stAppViewContainer"] {
         background: #f7f6f2;
     }
